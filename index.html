@@ -1,0 +1,851 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Periksa Dulu</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@600;700&display=swap">
+<style>
+/* Layout: dua tampilan, beranda dan Episode 1. Gaya mengikuti logo: bulan sabit teal, stetoskop oranye, huruf bulat, latar putih yang lapang. */
+:root {
+  --teal: #1E88A0;
+  --orange: #E8993A;
+  --bg: #FFFFFF;
+  --bg-alt: #F1F8FA;
+  --surface: #FFFFFF;
+  --fg: #12313C;
+  --muted: #4A6670;
+  --line: #D5E6EB;
+  --brand-text: #136C86;
+  --accent: #9C5A0A;
+  --head-bg: #FFFFFF;
+  --hero-bg: #E8F4F8;
+  --band: #17708A;
+  --on-band: #FFFFFF;
+  --on-band-muted: #D4EBF1;
+  --on-band-accent: #FFC27A;
+  --btn-bg: #17708A;
+  --btn-fg: #FFFFFF;
+  --bar: #1E88A0;
+  --refband: rgba(232, 153, 58, 0.3);
+  --hatch: rgba(156, 90, 10, 0.42);
+  --shadow: rgba(19, 108, 134, 0.3);
+  --font-display: 'Quicksand', 'Nunito', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0A1E26;
+    --bg-alt: #0E2832;
+    --surface: #11303B;
+    --fg: #E8F3F6;
+    --muted: #A3BDC6;
+    --line: #1F4553;
+    --brand-text: #6CC4DE;
+    --accent: #F0A850;
+    --head-bg: #081920;
+    --hero-bg: #0E2832;
+    --band: #0F4558;
+    --btn-bg: #6CC4DE;
+    --btn-fg: #06222C;
+    --bar: #6CC4DE;
+    --refband: rgba(240, 168, 80, 0.16);
+    --hatch: rgba(240, 168, 80, 0.42);
+    --shadow: rgba(0, 0, 0, 0.55);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0A1E26;
+  --bg-alt: #0E2832;
+  --surface: #11303B;
+  --fg: #E8F3F6;
+  --muted: #A3BDC6;
+  --line: #1F4553;
+  --brand-text: #6CC4DE;
+  --accent: #F0A850;
+  --head-bg: #081920;
+  --hero-bg: #0E2832;
+  --band: #0F4558;
+  --btn-bg: #6CC4DE;
+  --btn-fg: #06222C;
+  --bar: #6CC4DE;
+  --refband: rgba(240, 168, 80, 0.16);
+  --hatch: rgba(240, 168, 80, 0.42);
+  --shadow: rgba(0, 0, 0, 0.55);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 16px/1.65 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+body.is-home { background: var(--hero-bg); }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  background: var(--head-bg);
+  z-index: 30;
+}
+.wrap {
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.script :focus-visible, .foot :focus-visible { outline-color: #FFFFFF; }
+
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(28px, 4.2vw, 42px); line-height: 1.15; font-weight: 700; color: var(--brand-text); }
+h3 { font-size: 22px; line-height: 1.25; font-weight: 700; }
+p { margin: 0; }
+.eyebrow {
+  font: 700 12px/1.3 var(--font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.lead { font-size: 18px; max-width: 62ch; }
+.prose { max-width: 65ch; }
+.muted { color: var(--muted); }
+.rule { height: 4px; width: 56px; border-radius: 2px; background: var(--orange); margin-bottom: 22px; }
+
+/* Header */
+.site-head {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 20;
+  background: var(--head-bg);
+  color: var(--fg);
+  border-bottom: 1px solid var(--line);
+}
+.head-in { display: flex; align-items: center; gap: 14px; height: 60px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; flex: none; }
+.brand img { width: 38px; height: 38px; border-radius: 50%; display: block; background: #FFFFFF; }
+.brand span { font: 700 20px/1 var(--font-display); color: var(--brand-text); }
+.nav { flex: 1; min-width: 0; overflow-x: auto; white-space: nowrap; display: flex; justify-content: flex-end; scrollbar-width: thin; }
+.nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font: 700 14px/1 var(--font-body);
+  padding: 22px 12px 19px;
+  flex: none;
+  border-bottom: 3px solid transparent;
+}
+.nav a:hover { color: var(--fg); }
+.nav a[aria-current="true"] { color: var(--brand-text); border-bottom-color: var(--orange); }
+@media (max-width: 560px) { .brand span { display: none; } }
+
+/* Hero */
+.hero { background: var(--hero-bg); color: var(--fg); padding-block: clamp(40px, 7vw, 84px); }
+#view-home .hero { padding-block: clamp(48px, 9vw, 110px); }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
+.seal {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 1px var(--line), 0 28px 50px -26px var(--shadow);
+}
+.seal img { display: block; width: 100%; height: 100%; }
+.hero h1 { font-size: clamp(46px, 8.5vw, 90px); line-height: 1; font-weight: 700; letter-spacing: -0.01em; color: var(--brand-text); }
+.hero .tag { margin-top: 12px; font: 600 clamp(20px, 3vw, 28px)/1.2 var(--font-display); color: var(--accent); }
+.hero .intro { margin-top: 22px; max-width: 52ch; font-size: 18px; }
+.btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.btn {
+  display: inline-block;
+  font: 700 15px/1 var(--font-body);
+  text-decoration: none;
+  padding: 15px 26px;
+  border-radius: 999px;
+  border: 2px solid var(--btn-bg);
+}
+.btn.primary { background: var(--btn-bg); color: var(--btn-fg); }
+.btn.primary:hover { filter: brightness(1.1); }
+.btn.ghost { color: var(--brand-text); border-color: var(--brand-text); background: transparent; }
+.btn.ghost:hover { background: var(--surface); }
+@media (max-width: 760px) {
+  .hero .wrap { grid-template-columns: 1fr; }
+  .seal { max-width: 220px; }
+}
+
+/* Sections */
+section { padding-block: clamp(52px, 8vw, 96px); scroll-margin-top: 60px; }
+section.alt { background: var(--bg-alt); }
+.sec-head { display: flex; flex-direction: column; gap: 6px; margin-bottom: 36px; max-width: 760px; }
+.sec-head .lead { margin-top: 12px; }
+
+/* Ledger */
+.ledger { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.ledger li {
+  display: grid;
+  grid-template-columns: minmax(120px, 190px) minmax(0, 1fr) minmax(0, 200px);
+  gap: 6px 28px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--line);
+  align-items: baseline;
+}
+.fig { font: 700 clamp(30px, 4vw, 42px)/1 var(--font-display); font-variant-numeric: tabular-nums; color: var(--brand-text); }
+.ledger .src { font-size: 13px; color: var(--muted); }
+.note {
+  margin-top: 28px;
+  padding: 18px 22px;
+  border: 2px dashed var(--orange);
+  border-radius: 14px;
+  max-width: 760px;
+}
+.note b { display: block; font: 700 12px/1.3 var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.gap-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 56px; border-top: 2px solid var(--orange); }
+.gap-cols > div { padding: 24px 28px 0 0; }
+.gap-cols > div + div { padding: 24px 0 0 28px; border-left: 1px solid var(--line); }
+.gap-cols h3 { margin-bottom: 8px; }
+@media (max-width: 680px) {
+  .ledger li { grid-template-columns: 1fr; }
+  .gap-cols { grid-template-columns: 1fr; }
+  .gap-cols > div, .gap-cols > div + div { padding: 20px 0 0; border-left: 0; }
+}
+
+/* Masalah dan tujuan */
+.statement { font: 700 clamp(24px, 3.6vw, 36px)/1.25 var(--font-display); max-width: 24em; text-wrap: balance; margin-bottom: 44px; }
+.two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 40px 56px; }
+.two-col h3 { padding-bottom: 12px; border-bottom: 2px solid var(--orange); margin-bottom: 4px; }
+.olist { list-style: none; counter-reset: n; margin: 0; padding: 0; }
+.olist li { counter-increment: n; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.olist li::before { content: counter(n); font: 700 20px/1.4 var(--font-display); color: var(--accent); }
+
+/* Topik */
+.reason { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 0 24px; padding-top: 44px; margin-top: 44px; border-top: 1px solid var(--line); scroll-margin-top: 76px; }
+.r-num { font: 700 54px/1 var(--font-display); color: var(--accent); }
+.r-body { min-width: 0; }
+.r-body h3 { font-size: clamp(22px, 3vw, 28px); margin-bottom: 12px; color: var(--brand-text); }
+@media (max-width: 640px) {
+  .reason { grid-template-columns: 1fr; gap: 8px; }
+  .r-num { font-size: 40px; }
+}
+.src-chip { display: inline-block; font: 700 12px/1 var(--font-body); padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); background: var(--surface); margin: 0 6px 6px 0; }
+
+.rows { list-style: none; margin: 22px 0 0; padding: 0; border-top: 1px solid var(--line); }
+.rows li { display: grid; grid-template-columns: minmax(0, 210px) minmax(0, 1fr) minmax(0, 170px); gap: 6px 24px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.rows .asp { font-weight: 800; font-size: 15px; }
+.rows .find { font-size: 15px; }
+@media (max-width: 720px) { .rows li { grid-template-columns: 1fr; } }
+
+/* Kartu mitos */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px; margin-top: 22px; perspective: 1200px; }
+.flip-btn {
+  display: grid;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+.flip-btn[aria-pressed="true"] { transform: rotateY(180deg); }
+.face {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 260px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.face.front { background: var(--surface); }
+.face.front .q { font: 700 22px/1.3 var(--font-display); }
+.face.front .hint { margin-top: auto; font-size: 13px; font-weight: 700; color: var(--accent); }
+.face.back { background: var(--band); color: var(--on-band); border-color: var(--band); transform: rotateY(180deg); }
+.verdict-tag { align-self: flex-start; font: 800 12px/1 var(--font-body); letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 12px; background: var(--orange); color: #3A2200; border-radius: 999px; }
+.face.back p { font-size: 15px; }
+.face.back .by { margin-top: auto; font-size: 13px; font-weight: 700; color: var(--on-band-accent); }
+@media (prefers-reduced-motion: reduce) { .flip-btn { transition: none; } html { scroll-behavior: auto; } }
+
+/* Daftar kebiasaan */
+.checks { list-style: none; margin: 22px 0 0; padding: 0; border-top: 1px solid var(--line); }
+.checks li { border-bottom: 1px solid var(--line); }
+.checks label { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 14px; padding: 16px 0; cursor: pointer; align-items: start; }
+.checks input { width: 22px; height: 22px; margin: 2px 0 0; accent-color: var(--brand-text); }
+.checks input:checked + span { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--orange); text-decoration-thickness: 2px; }
+.tally { margin-top: 14px; font-size: 14px; font-weight: 700; color: var(--muted); }
+
+/* Grafik jam tidur */
+.range { margin-top: 24px; }
+.rrow { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 4px 22px; align-items: center; padding: 7px 0; }
+.rlabel { font-weight: 800; font-size: 14px; line-height: 1.35; }
+.rlabel small { display: block; font-weight: 600; color: var(--muted); font-size: 12px; }
+.track {
+  position: relative;
+  height: 40px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  background-image: linear-gradient(to right, var(--line) 1px, transparent 1px);
+  background-size: calc(100% / 7) 100%;
+}
+.zone { position: absolute; top: 0; bottom: 0; left: 0; width: 28.571%; background: repeating-linear-gradient(135deg, var(--hatch) 0 2px, transparent 2px 7px); }
+.refband { position: absolute; top: 0; bottom: 0; left: 42.857%; width: 28.571%; background: var(--refband); }
+.bar { position: absolute; top: 12px; height: 16px; border-radius: 8px; background: var(--bar); left: calc((var(--a) - 4) / 7 * 100%); width: calc((var(--b) - var(--a)) / 7 * 100%); }
+.bar.open { background: linear-gradient(to right, var(--bar) 35%, transparent); }
+.me { position: absolute; top: -5px; bottom: -5px; width: 4px; border-radius: 2px; margin-left: -2px; left: calc((var(--me) - 4) / 7 * 100%); background: var(--fg); box-shadow: 0 0 0 2px var(--bg); z-index: 2; }
+.ticks { position: relative; height: 22px; font-size: 12px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ticks span { position: absolute; top: 4px; left: calc((var(--t) - 4) / 7 * 100%); transform: translateX(-50%); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 14px 0 26px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.sw { width: 22px; height: 12px; display: inline-block; border: 1px solid var(--line); }
+.sw.h { background: repeating-linear-gradient(135deg, var(--hatch) 0 2px, transparent 2px 6px); }
+.sw.r { background: var(--refband); }
+.sw.b { background: var(--bar); border-color: var(--bar); border-radius: 6px; }
+.sw.m { width: 4px; height: 16px; background: var(--fg); border: 0; border-radius: 2px; }
+.slider { border: 1px solid var(--line); background: var(--surface); border-radius: 18px; padding: 22px 24px; max-width: 760px; }
+.slider label { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-weight: 800; font-size: 15px; }
+.slider output { font: 700 28px/1 var(--font-display); font-variant-numeric: tabular-nums; color: var(--brand-text); }
+.slider input[type="range"] { width: 100%; margin: 18px 0 14px; accent-color: var(--brand-text); height: 28px; }
+.slider .out { font-size: 15px; min-height: 5.2em; }
+.slider .small { margin-top: 10px; font-size: 12px; color: var(--muted); }
+@media (max-width: 640px) {
+  .rrow { grid-template-columns: 1fr; gap: 6px; padding: 10px 0 4px; }
+  .rrow.axis > .spacer { display: none; }
+}
+
+/* Audiens dan cakupan */
+.aud { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 270px), 1fr)); gap: 36px 40px; margin-top: 40px; }
+.aud > div { border-top: 2px solid var(--orange); padding-top: 18px; }
+.aud h3 { margin-bottom: 12px; color: var(--brand-text); }
+.aud ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.aud li { position: relative; padding-left: 22px; font-size: 15px; }
+.aud li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 9px; height: 9px; border-radius: 50%; background: var(--orange); }
+
+/* Skrip dan footer */
+.script { background: var(--band); color: var(--on-band); }
+.script h2 { color: var(--on-band); }
+.script .eyebrow { color: var(--on-band-accent); }
+.script .row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; }
+.script p { margin-top: 10px; max-width: 52ch; color: var(--on-band-muted); }
+.script .btn.primary { background: #FFFFFF; color: #0F4558; border-color: #FFFFFF; }
+.foot { background: var(--band); color: var(--on-band-muted); padding-block: 40px; font-size: 14px; }
+.foot .wrap { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px; align-items: start; }
+.foot img { width: 64px; height: 64px; border-radius: 50%; display: block; background: #FFFFFF; }
+.foot h4 { margin: 0 0 8px; font: 700 12px/1.3 var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--on-band-accent); }
+.foot ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 4px 28px; }
+</style>
+
+<header class="site-head">
+  <div class="wrap head-in">
+    <a class="brand" href="#beranda" aria-label="Periksa Dulu, ke beranda"><img src="data:image/webp;base64,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" alt=""><span>Periksa Dulu</span></a>
+    <nav class="nav" aria-label="Bagian halaman">
+      <a href="#beranda" data-show="both">Beranda</a>
+      <a href="#episode-1" data-show="home">Episode 1</a>
+      <a href="#episode-1" data-show="ep" hidden>Pengantar</a>
+      <a href="#latar" data-show="ep" hidden>Latar belakang</a>
+      <a href="#masalah" data-show="ep" hidden>Masalah</a>
+      <a href="#dampak" data-show="ep" hidden>Dampak</a>
+      <a href="#mitos" data-show="ep" hidden>Mitos</a>
+      <a href="#kebiasaan" data-show="ep" hidden>Kebiasaan</a>
+      <a href="#kebutuhan" data-show="ep" hidden>Jam tidur</a>
+      <a href="#audiens" data-show="ep" hidden>Audiens</a>
+      <a href="#skrip" data-show="ep" hidden>Skrip</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div id="view-home">
+  <div class="hero">
+    <div class="wrap">
+      <div class="seal"><img src="data:image/webp;base64,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" alt="Logo Periksa Dulu: bulan sabit biru kehijauan dengan stetoskop oranye"></div>
+      <div>
+        <h1>Periksa Dulu</h1>
+        <p class="tag">Podcast Kesehatan</p>
+        <p class="intro">Periksa Dulu adalah proyek podcast drama yang mengemas fakta kesehatan menjadi cerita yang dekat dengan remaja dan dewasa muda. Episode 1 mengangkat kebiasaan begadang.</p>
+        <div class="btns">
+          <a class="btn primary" href="#episode-1">Episode 1</a>
+          <a class="btn ghost" href="https://docs.google.com/document/d/1UUsDaWpj9xQBkoXKS9BUZyfDqKdtRteSraetuwf-s_Y/edit?usp=sharing" target="_blank" rel="noopener">Buka skrip film</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+  <div id="view-ep" hidden>
+  <section id="episode-1" class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="rule"></div>
+        <p class="eyebrow">Podcast kesehatan Periksa Dulu</p>
+        <h2>Episode 1: Begadang</h2>
+        <p class="lead">Periksa Dulu adalah podcast drama kesehatan. Episode 1 membahas kebiasaan begadang. Konsep begadang hanya berlaku untuk episode ini, bukan untuk keseluruhan proyek.</p>
+      </div>
+      <div class="aud">
+        <div>
+          <h3>Kesehatan dalam bentuk drama</h3>
+          <ul>
+            <li>Fakta kesehatan dari sumber resmi dikemas menjadi cerita.</li>
+            <li>Tokoh yang dekat dengan pendengar membawa faktanya.</li>
+            <li>Obrolan sehat hadir bersama dokter tamu.</li>
+            <li>Disampaikan lebih ringan dibanding artikel panjang.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Cara naskah disusun</h3>
+          <ul>
+            <li>Berbasis fakta dari Kemenkes, CDC, AASM, Harvard Medical School, dan Alomedika.</li>
+            <li>Segmen Mitos atau Fakta meluruskan anggapan yang keliru.</li>
+            <li>Memakai kata “dikaitkan dengan” agar temuan tidak dilebih-lebihkan.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Untuk siapa</h3>
+          <ul>
+            <li>Remaja dan dewasa muda.</li>
+            <li>Pelajar, mahasiswa, dan pekerja muda yang begadang karena tugas, pekerjaan, atau hiburan.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="eyebrow" style="margin-top:56px">Cakupan proyek dan Episode 1</p>
+      <div class="aud" style="margin-top:0">
+        <div>
+          <h3>Keseluruhan proyek</h3>
+          <ul>
+            <li>Podcast drama kesehatan dengan tokoh yang dekat dengan pendengar dan dokter tamu.</li>
+            <li>Dikerjakan lewat riset sumber, penulisan naskah, peran, rekaman, dan penyuntingan.</li>
+            <li>Bisa dikembangkan menjadi seri dengan topik kebiasaan lain.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Khusus Episode 1: Begadang</h3>
+          <ul>
+            <li>Latar belakang, rumusan masalah, dan tujuan tentang begadang.</li>
+            <li>Dampak kurang tidur menurut sumber resmi.</li>
+            <li>Segmen Mitos atau Fakta seputar tidur.</li>
+            <li>Kebiasaan tidur sehat dan acuan jam tidur.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:32px; max-width:62ch">Bagian di bawah ini menjelaskan Episode 1 dari latar belakang sampai kebutuhan tidur.</p>
+    </div>
+  </section>
+
+  <section id="latar">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="rule"></div>
+        <p class="eyebrow">Episode 1 · Latar belakang</p>
+        <h2>Begadang terasa biasa, dampaknya tercatat</h2>
+        <p class="lead">Kebiasaan yang dianggap biasa paling mudah luput dari perhatian. Berikut data yang menjadi pijakan kami.</p>
+      </div>
+      <ul class="ledger">
+        <li>
+          <span class="fig">7–9 jam</span>
+          <p>Kebutuhan tidur orang dewasa menurut Kemenkes. Banyak orang tidak mencapainya karena harus begadang menyelesaikan tugas atau sibuk dengan gawai.</p>
+          <span class="src">Kemenkes, 2022</span>
+        </li>
+        <li>
+          <span class="fig">≤ 6 jam</span>
+          <p>Panel 15 pakar dari American Academy of Sleep Medicine dan Sleep Research Society menyimpulkan bahwa tidur enam jam atau kurang per malam tidak cukup untuk menjaga kesehatan dan keselamatan orang dewasa.</p>
+          <span class="src">AASM, 2015</span>
+        </li>
+        <li>
+          <span class="fig">33,2%</span>
+          <p>Dalam survei nasional Amerika Serikat tahun 2020, sebanyak 33,2% orang dewasa melaporkan tidur kurang dari 7 jam. Pola ini berkaitan dengan risiko obesitas, diabetes, hipertensi, penyakit jantung, stroke, kecemasan, dan depresi.</p>
+          <span class="src">Pankowska dkk., CDC, 2023</span>
+        </li>
+        <li>
+          <span class="fig">± 38%</span>
+          <p>Prevalensi gangguan tidur remaja di Indonesia dilaporkan sekitar 38% di daerah urban dan 37,7% di daerah suburban. Datanya berasal dari laporan diri dengan desain potong lintang.</p>
+          <span class="src">Alomedika, 2023</span>
+        </li>
+        <li>
+          <span class="fig">43,7%</span>
+          <p>Studi lain melaporkan insomnia pada penduduk usia 19 tahun ke atas sebesar 43,7%.</p>
+          <span class="src">Alomedika, 2023</span>
+        </li>
+      </ul>
+      <div class="note">
+        <b>Catatan pembacaan data</b>
+        <p>Penelitian epidemiologi gangguan tidur di Indonesia masih sangat jarang, dan metode tiap studi berbeda. Angkanya dibaca hati-hati. Arahnya tetap jelas: masalah tidur bukan hal langka.</p>
+      </div>
+      <div class="gap-cols">
+        <div>
+          <h3>Informasi resmi sudah ada</h3>
+          <p class="muted">Umumnya berbentuk artikel panjang, sementara kebiasaan sehari-hari anak muda berjalan di tempat lain.</p>
+        </div>
+        <div>
+          <h3>Podcast drama mengisi celahnya</h3>
+          <p class="muted">Tokoh yang dekat dengan pendengar membawa fakta yang sama dengan cara yang lebih ringan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="masalah" class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="rule"></div>
+        <p class="eyebrow">Episode 1 · Rumusan masalah dan tujuan</p>
+        <h2>Satu masalah utama, empat pertanyaan, empat tujuan</h2>
+      </div>
+      <p class="statement">Kebiasaan begadang dinormalkan, sementara bukti medis menunjukkan dampaknya nyata.</p>
+      <div class="two-col">
+        <div>
+          <h3>Rumusan masalah</h3>
+          <ol class="olist">
+            <li><span>Mengapa begadang dianggap sepele oleh banyak orang?</span></li>
+            <li><span>Apa dampak begadang bagi kesehatan jangka pendek dan jangka panjang?</span></li>
+            <li><span>Mitos apa saja tentang tidur yang perlu diluruskan?</span></li>
+            <li><span>Bagaimana menyampaikan fakta medis dengan cara yang menarik bagi pendengar muda?</span></li>
+          </ol>
+        </div>
+        <div>
+          <h3>Tujuan</h3>
+          <ol class="olist">
+            <li><span>Menjelaskan fungsi tidur dan kebutuhan tidur menurut sumber resmi.</span></li>
+            <li><span>Menguraikan dampak kurang tidur berdasarkan Kemenkes, CDC, AASM, dan sumber ilmiah lain.</span></li>
+            <li><span>Meluruskan mitos tentang kopi, utang tidur, alkohol, dan “terbiasa tidur sedikit”.</span></li>
+            <li><span>Memberi kebiasaan tidur sehat yang bisa langsung dicoba pendengar.</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="topik">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="rule"></div>
+        <p class="eyebrow">Episode 1 · Mengapa kami memilih topik begadang</p>
+        <h2>Dekat dengan pendengar, bukti kuat, solusi sederhana</h2>
+        <p class="lead">Ada lima alasan. Masing-masing punya bahan yang dipakai langsung di naskah.</p>
+      </div>
+
+      <div class="reason" id="umum">
+        <div class="r-num" aria-hidden="true">1</div>
+        <div class="r-body">
+          <h3>Kebiasaan ini umum dan dianggap normal</h3>
+          <p class="prose">Kemenkes mencatat bahwa begadang sering terjadi karena tugas yang belum selesai atau asyik dengan gawai. Harvard Medical School menyebut banyak orang tidak mendapat tidur yang cukup.</p>
+          <p style="margin-top:12px"><span class="src-chip">Kemenkes</span><span class="src-chip">Harvard Medical School</span></p>
+        </div>
+      </div>
+
+      <div class="reason" id="dampak">
+        <div class="r-num" aria-hidden="true">2</div>
+        <div class="r-body">
+          <h3>Dampaknya luas dan didukung bukti</h3>
+          <p class="prose">Ringkasan temuan yang menjadi bahan naskah.</p>
+          <ul class="rows">
+            <li><span class="asp">Konsentrasi dan memori</span><span class="find">Kurang tidur mengganggu kewaspadaan, perhatian, penalaran, serta kemampuan otak memproses dan menyimpan ingatan.</span><span><span class="src-chip">Kemenkes</span></span></li>
+            <li><span class="asp">Berat badan</span><span class="find">Tidur kurang dari 6 jam dikaitkan dengan risiko obesitas lebih tinggi dibanding tidur 7 sampai 9 jam. Kurang tidur juga mengubah hormon pengatur lapar.</span><span><span class="src-chip">Kemenkes</span><span class="src-chip">Harvard</span></span></li>
+            <li><span class="asp">Gula darah</span><span class="find">Dalam satu studi pembatasan tidur, peserta sehat yang tidurnya dikurangi dari 8 menjadi 4 jam memproses glukosa lebih lambat.</span><span><span class="src-chip">Harvard</span></span></li>
+            <li><span class="asp">Tekanan darah dan jantung</span><span class="find">Satu malam tidur kurang pada penderita hipertensi dapat menaikkan tekanan darah sepanjang hari berikutnya.</span><span><span class="src-chip">Harvard</span></span></li>
+            <li><span class="asp">Suasana hati dan kesehatan mental</span><span class="find">Kurang tidur kronis berkorelasi dengan depresi, kecemasan, dan tekanan mental.</span><span><span class="src-chip">Harvard</span><span class="src-chip">Kemenkes</span></span></li>
+            <li><span class="asp">Daya tahan tubuh</span><span class="find">Tidur cukup membantu produksi sitokin, senyawa yang melawan bakteri dan virus.</span><span><span class="src-chip">Kemenkes</span></span></li>
+            <li><span class="asp">Keselamatan</span><span class="find">Kurang tidur menurunkan konsentrasi sehingga meningkatkan risiko kecelakaan kerja dan kendaraan.</span><span><span class="src-chip">Alomedika</span><span class="src-chip">CDC</span></span></li>
+          </ul>
+          <div class="note">
+            <b>Catatan kehati-hatian</b>
+            <p>Harvard menjelaskan bahwa sebagian bukti berasal dari studi potong lintang, yang menunjukkan keterkaitan tetapi tidak membuktikan sebab-akibat. Naskah memakai kata “dikaitkan dengan” dan tidak melebih-lebihkan.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="reason" id="mitos">
+        <div class="r-num" aria-hidden="true">3</div>
+        <div class="r-body">
+          <h3>Banyak mitos beredar</h3>
+          <p class="prose">Segmen Mitos atau Fakta memakai rujukan seperti ini. Ketuk kartu untuk melihat jawabannya.</p>
+          <div class="cards">
+            <button class="flip-btn" type="button" aria-pressed="false">
+              <span class="face front" aria-hidden="false">
+                <span class="eyebrow" style="margin:0">Mitos atau fakta?</span>
+                <span class="q">“Minum alkohol bikin tidur lebih nyenyak.”</span>
+                <span class="hint">Ketuk untuk jawaban</span>
+              </span>
+              <span class="face back" aria-hidden="true">
+                <span class="verdict-tag">Mitos</span>
+                <p>Efek sedatif alkohol hanya sementara, lalu justru memicu terbangun dan gangguan tidur di malam hari. CDC juga menyarankan menghindari alkohol dan makan besar menjelang tidur.</p>
+                <span class="by">Harvard, CDC</span>
+              </span>
+            </button>
+            <button class="flip-btn" type="button" aria-pressed="false">
+              <span class="face front" aria-hidden="false">
+                <span class="eyebrow" style="margin:0">Mitos atau fakta?</span>
+                <span class="q">“Kopi sore tidak ada pengaruhnya ke tidur malam.”</span>
+                <span class="hint">Ketuk untuk jawaban</span>
+              </span>
+              <span class="face back" aria-hidden="true">
+                <span class="verdict-tag">Mitos</span>
+                <p>CDC menyarankan menghindari kafein di sore dan malam hari agar tidur tidak terganggu.</p>
+                <span class="by">CDC</span>
+              </span>
+            </button>
+            <button class="flip-btn" type="button" aria-pressed="false">
+              <span class="face front" aria-hidden="false">
+                <span class="eyebrow" style="margin:0">Mitos atau fakta?</span>
+                <span class="q">“Enam jam tidur sudah cukup buat saya.”</span>
+                <span class="hint">Ketuk untuk jawaban</span>
+              </span>
+              <span class="face back" aria-hidden="true">
+                <span class="verdict-tag">Mitos</span>
+                <p>Panel 15 pakar AASM dan Sleep Research Society menyimpulkan bahwa tidur enam jam atau kurang per malam tidak cukup untuk menjaga kesehatan dan keselamatan orang dewasa.</p>
+                <span class="by">AASM, 2015</span>
+              </span>
+            </button>
+          </div>
+          <p class="muted" style="margin-top:18px; font-size:14px">Mitos tentang utang tidur juga masuk daftar yang diluruskan di naskah.</p>
+        </div>
+      </div>
+
+      <div class="reason" id="kebiasaan">
+        <div class="r-num" aria-hidden="true">4</div>
+        <div class="r-body">
+          <h3>Solusinya sederhana</h3>
+          <p class="prose">CDC menyebut kebiasaan kecil yang realistis dicoba pendengar. Tandai yang sudah kamu lakukan.</p>
+          <ul class="checks" id="checks">
+            <li><label><input type="checkbox"><span>Tidur dan bangun di jam yang sama.</span></label></li>
+            <li><label><input type="checkbox"><span>Jaga kamar tetap tenang dan sejuk.</span></label></li>
+            <li><label><input type="checkbox"><span>Matikan perangkat elektronik minimal 30 menit sebelum tidur.</span></label></li>
+            <li><label><input type="checkbox"><span>Hindari kafein di sore dan malam hari, juga alkohol dan makan besar menjelang tidur.</span></label></li>
+          </ul>
+          <p class="tally" id="tally" aria-live="polite">Sudah dilakukan: 0 dari 4</p>
+          <p style="margin-top:6px"><span class="src-chip">CDC</span></p>
+        </div>
+      </div>
+
+      <div class="reason" id="kebutuhan">
+        <div class="r-num" aria-hidden="true">5</div>
+        <div class="r-body">
+          <h3>Kebutuhan tidur sudah punya acuan resmi</h3>
+          <p class="prose">Rentang Kemenkes (7 sampai 8 jam) dan AASM (7 jam atau lebih) sedikit berbeda. Naskah menyebut “sekitar 7 sampai 9 jam” seperti pada artikel Kemenkes lain, dengan catatan kebutuhan tiap orang bervariasi.</p>
+
+          <div class="range" id="range" style="--me:6">
+            <div class="rrow">
+              <div class="rlabel">Remaja 12–18 tahun<small>8 sampai 9 jam · Kemenkes (UPK)</small></div>
+              <div class="track"><div class="refband"></div><div class="bar" style="--a:8;--b:9"></div><div class="me"></div></div>
+            </div>
+            <div class="rrow">
+              <div class="rlabel">Remaja 13–17 tahun<small>8 sampai 10 jam · CDC</small></div>
+              <div class="track"><div class="refband"></div><div class="bar" style="--a:8;--b:10"></div><div class="me"></div></div>
+            </div>
+            <div class="rrow">
+              <div class="rlabel">Dewasa 18–40 tahun<small>7 sampai 8 jam · Kemenkes (UPK)</small></div>
+              <div class="track"><div class="zone"></div><div class="refband"></div><div class="bar" style="--a:7;--b:8"></div><div class="me"></div></div>
+            </div>
+            <div class="rrow">
+              <div class="rlabel">Dewasa 18–60 tahun<small>7 jam atau lebih · AASM, CDC</small></div>
+              <div class="track"><div class="zone"></div><div class="refband"></div><div class="bar open" style="--a:7;--b:11"></div><div class="me"></div></div>
+            </div>
+            <div class="rrow axis">
+              <div class="spacer"></div>
+              <div class="ticks" aria-hidden="true">
+                <span style="--t:4">4</span><span style="--t:5">5</span><span style="--t:6">6</span><span style="--t:7">7</span><span style="--t:8">8</span><span style="--t:9">9</span><span style="--t:10">10</span><span style="--t:11">11</span>
+              </div>
+            </div>
+          </div>
+          <div class="legend" aria-hidden="true">
+            <span><i class="sw b"></i>Acuan sumber, dalam jam per malam</span>
+            <span><i class="sw r"></i>Sekitar 7 sampai 9 jam, dipakai di naskah</span>
+            <span><i class="sw h"></i>6 jam atau kurang, belum cukup untuk dewasa</span>
+            <span><i class="sw m"></i>Tidur saya</span>
+          </div>
+
+          <div class="slider">
+            <label for="hours"><span>Tidur saya semalam</span><output id="hours-out" for="hours">6 jam</output></label>
+            <input id="hours" type="range" min="4" max="11" step="0.5" value="6">
+            <p class="out" id="verdict" aria-live="polite">Di bawah acuan. AASM menyimpulkan bahwa tidur enam jam atau kurang per malam tidak cukup untuk menjaga kesehatan dan keselamatan orang dewasa. Untuk remaja, acuan Kemenkes dan CDC mulai dari 8 jam. Kebutuhan tiap orang bervariasi.</p>
+            <p class="small">Perbandingan dengan acuan di naskah, bukan diagnosis.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="audiens" class="alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="rule"></div>
+        <p class="eyebrow">Manfaat dan target audiens</p>
+        <h2>Untuk mereka yang paling sering begadang</h2>
+        <p class="lead">Podcast ini ditujukan bagi remaja dan dewasa muda, yaitu pelajar, mahasiswa, dan pekerja muda yang begadang karena tugas, pekerjaan, atau hiburan.</p>
+      </div>
+      <div class="aud">
+        <div>
+          <h3>Bagi pendengar</h3>
+          <ul>
+            <li>Memahami fungsi tidur dan kebutuhan tidur sesuai usia.</li>
+            <li>Mengenali dampak kurang tidur pada fokus, suasana hati, berat badan, dan kesehatan jangka panjang.</li>
+            <li>Mendapat kebiasaan tidur sehat yang mudah dicoba.</li>
+            <li>Tahu kapan sebaiknya berkonsultasi ke dokter, misalnya bila sulit tidur berminggu-minggu.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Bagi tim</h3>
+          <ul>
+            <li>Melatih riset dengan sumber kredibel dan menulis naskah berbasis fakta.</li>
+            <li>Melatih kerja sama produksi: penulisan, peran, rekaman, dan penyuntingan.</li>
+            <li>Menghasilkan karya yang bisa dikembangkan menjadi seri dengan topik kebiasaan lain.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Bagi masyarakat</h3>
+          <ul>
+            <li>Menambah informasi kesehatan yang mudah dipahami dan bersumber jelas.</li>
+            <li>Mengurangi penyebaran mitos kesehatan yang beredar dari mulut ke mulut.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skrip" class="script">
+    <div class="wrap">
+      <div class="row">
+        <div>
+          <p class="eyebrow">Skrip film</p>
+          <h2>Naskah lengkap ada di Google Docs</h2>
+          <p>Skrip film proyek ini dapat dibuka dan dibaca lengkap.</p>
+        </div>
+        <a class="btn primary" href="https://docs.google.com/document/d/1UUsDaWpj9xQBkoXKS9BUZyfDqKdtRteSraetuwf-s_Y/edit?usp=sharing" target="_blank" rel="noopener">Buka skrip film</a>
+      </div>
+    </div>
+  </section>
+  </div>
+</main>
+
+<footer class="foot" id="foot" hidden>
+  <div class="wrap">
+    <img src="data:image/webp;base64,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" alt="Logo Periksa Dulu">
+    <div>
+      <h4>Sumber rujukan</h4>
+      <ul>
+        <li>Kementerian Kesehatan RI, 2022</li>
+        <li>Kemenkes, Unit Pelayanan Kesehatan (UPK)</li>
+        <li>American Academy of Sleep Medicine dan Sleep Research Society, 2015</li>
+        <li>Pankowska dkk., CDC, 2023</li>
+        <li>CDC, kebiasaan tidur sehat</li>
+        <li>Harvard Medical School, Division of Sleep Medicine</li>
+        <li>Alomedika, 2023</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var range = document.getElementById('range');
+  var hours = document.getElementById('hours');
+  var out = document.getElementById('hours-out');
+  var verdict = document.getElementById('verdict');
+
+  function fmt(h) { return String(h).replace('.', ',') + ' jam'; }
+  function verdictFor(h) {
+    var t;
+    if (h <= 6) t = 'Di bawah acuan. AASM menyimpulkan bahwa tidur enam jam atau kurang per malam tidak cukup untuk menjaga kesehatan dan keselamatan orang dewasa.';
+    else if (h < 7) t = 'Mendekati acuan, tetapi masih di bawah 7 jam, batas bawah untuk dewasa menurut Kemenkes dan AASM.';
+    else if (h <= 9) t = 'Masuk kisaran sekitar 7 sampai 9 jam yang dipakai di naskah.';
+    else t = 'Di atas sekitar 7 sampai 9 jam. Acuan CDC untuk remaja memang sampai 10 jam.';
+    if (h < 8) t += ' Untuk remaja, acuan Kemenkes dan CDC mulai dari 8 jam.';
+    return t + ' Kebutuhan tiap orang bervariasi.';
+  }
+  function update() {
+    var h = parseFloat(hours.value);
+    range.style.setProperty('--me', h);
+    out.textContent = fmt(h);
+    verdict.textContent = verdictFor(h);
+    hours.setAttribute('aria-valuetext', fmt(h));
+  }
+  hours.addEventListener('input', update);
+  update();
+
+  var flips = document.querySelectorAll('.flip-btn');
+  Array.prototype.forEach.call(flips, function (b) {
+    b.addEventListener('click', function () {
+      var on = b.getAttribute('aria-pressed') !== 'true';
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.querySelector('.back').setAttribute('aria-hidden', on ? 'false' : 'true');
+      b.querySelector('.front').setAttribute('aria-hidden', on ? 'true' : 'false');
+    });
+  });
+
+  var boxes = document.querySelectorAll('#checks input');
+  var tally = document.getElementById('tally');
+  function count() {
+    var n = 0;
+    Array.prototype.forEach.call(boxes, function (c) { if (c.checked) n++; });
+    tally.textContent = 'Sudah dilakukan: ' + n + ' dari ' + boxes.length;
+  }
+  Array.prototype.forEach.call(boxes, function (c) { c.addEventListener('change', count); });
+
+  var vHome = document.getElementById('view-home');
+  var vEp = document.getElementById('view-ep');
+  var foot = document.getElementById('foot');
+  var epIds = ['episode-1', 'latar', 'masalah', 'topik', 'dampak', 'mitos', 'kebiasaan', 'kebutuhan', 'audiens', 'skrip'];
+  var navLinks = document.querySelectorAll('.nav a');
+  function show(name, id) {
+    var ep = name === 'ep';
+    vHome.hidden = ep;
+    vEp.hidden = !ep;
+    foot.hidden = !ep;
+    document.body.classList.toggle('is-home', !ep);
+    Array.prototype.forEach.call(navLinks, function (a) {
+      var s = a.getAttribute('data-show');
+      a.hidden = s !== 'both' && s !== (ep ? 'ep' : 'home');
+    });
+    var el = ep && id ? document.getElementById(id) : null;
+    if (el && id !== 'episode-1') el.scrollIntoView(); else window.scrollTo(0, 0);
+  }
+  function fromHash() {
+    var h = (location.hash || '').slice(1);
+    if (epIds.indexOf(h) > -1) show('ep', h); else show('home');
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var id = a.getAttribute('href').slice(1);
+    e.preventDefault();
+    if (epIds.indexOf(id) > -1) show('ep', id); else show('home');
+  });
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+
+  if ('IntersectionObserver' in window) {
+    var links = {};
+    Array.prototype.forEach.call(document.querySelectorAll('.nav a'), function (a) { links[a.getAttribute('href').slice(1)] = a; });
+    var current = null;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var a = links[e.target.id];
+        if (!a) return;
+        if (current) current.removeAttribute('aria-current');
+        a.setAttribute('aria-current', 'true');
+        current = a;
+        var nav = a.parentNode;
+        nav.scrollLeft = a.offsetLeft - (nav.clientWidth - a.offsetWidth) / 2;
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    Object.keys(links).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+  }
+})();
+</script>
+
+</body></html>
