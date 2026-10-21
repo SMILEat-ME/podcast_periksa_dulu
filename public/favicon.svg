@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="48" fill="#FFFFFF" stroke="#1E88A0" stroke-width="4"/>
+  <!-- Teal crescent moon -->
+  <path d="M68 20 A 32 32 0 1 0 68 80 A 24 24 0 0 1 68 20 Z" fill="#1E88A0"/>
+  <!-- Orange stethoscope ring -->
+  <circle cx="55" cy="50" r="16" fill="none" stroke="#E8993A" stroke-width="6"/>
+  <circle cx="68" cy="50" r="4" fill="#E8993A"/>
+</svg>

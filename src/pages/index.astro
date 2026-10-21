@@ -1,0 +1,151 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import EpisodeIntro from '../components/EpisodeIntro.astro';
+import BackgroundData from '../components/BackgroundData.astro';
+import ProblemsGoals from '../components/ProblemsGoals.astro';
+import WhyBegadang from '../components/WhyBegadang.astro';
+import ImpactAudience from '../components/ImpactAudience.astro';
+import ScriptSection from '../components/ScriptSection.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout
+  title="Periksa Dulu: Podcast Drama Kesehatan"
+  description="Mengubah obrolan medis yang kaku menjadi drama audio yang seru dan dekat dengan keseharian kita. Episode perdana mengupas tuntas realitas di balik kebiasaan begadang."
+>
+  <Header />
+
+  <main id="top">
+    <div id="view-home">
+      <Hero />
+    </div>
+
+    <div id="view-ep" hidden>
+      <EpisodeIntro />
+      <BackgroundData />
+      <ProblemsGoals />
+      <WhyBegadang />
+      <ImpactAudience />
+      <ScriptSection />
+    </div>
+  </main>
+
+  <Footer />
+
+  <script>
+(function () {
+  var range = document.getElementById('range');
+  var hours = document.getElementById('hours');
+  var out = document.getElementById('hours-out');
+  var verdict = document.getElementById('verdict');
+
+  function fmt(h) { return String(h).replace('.', ',') + ' jam'; }
+  function verdictFor(h) {
+    var t;
+    if (h <= 6) {
+      t = 'Kurang dari anjuran sehat. Konsensus pakar AASM menegaskan bahwa tidur 6 jam atau kurang per malam belum memadai untuk pemulihan optimal organ dan konsentrasi orang dewasa.';
+    } else if (h < 7) {
+      t = 'Mendekati batas anjuran. Durasi ini hampir mencapai ambang minimal orang dewasa (7 jam). Sedikit memajukan jam tidur malam akan terasa manfaatnya bagi kebugaranmu.';
+    } else if (h <= 9) {
+      t = 'Durasi tidur ideal! Waktu istirahatmu berada di rentang optimal (7 sampai 9 jam) yang direkomendasikan Kemenkes RI dan institusi medis global untuk orang dewasa.';
+    } else {
+      t = 'Melebihi durasi umum orang dewasa. Waktu 8 sampai 10 jam sangat baik untuk usia remaja. Namun bagi dewasa, jika kamu sering butuh tidur di atas 9 jam tapi badan tetap lelah, perhatikan kualitas tidurmu.';
+    }
+    if (h < 8) {
+      t += ' Bagi remaja (usia 12 sampai 18 tahun), acuan minimal yang dianjurkan adalah 8 jam.';
+    }
+    return t + ' Ingat, kebutuhan tidur tiap individu juga dapat bervariasi.';
+  }
+  function update() {
+    var h = parseFloat(hours.value);
+    range.style.setProperty('--me', h);
+    out.textContent = fmt(h);
+    verdict.textContent = verdictFor(h);
+    hours.setAttribute('aria-valuetext', fmt(h));
+  }
+  hours.addEventListener('input', update);
+  update();
+
+  var flips = document.querySelectorAll('.flip-btn');
+  Array.prototype.forEach.call(flips, function (b) {
+    b.addEventListener('click', function () {
+      var on = b.getAttribute('aria-pressed') !== 'true';
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.querySelector('.back').setAttribute('aria-hidden', on ? 'false' : 'true');
+      b.querySelector('.front').setAttribute('aria-hidden', on ? 'true' : 'false');
+    });
+  });
+
+  var boxes = document.querySelectorAll('#checks input');
+  var tally = document.getElementById('tally');
+  function count() {
+    var n = 0;
+    Array.prototype.forEach.call(boxes, function (c) { if (c.checked) n++; });
+    tally.textContent = 'Sudah dilakukan: ' + n + ' dari ' + boxes.length;
+  }
+  Array.prototype.forEach.call(boxes, function (c) { c.addEventListener('change', count); });
+
+  var vHome = document.getElementById('view-home');
+  var vEp = document.getElementById('view-ep');
+  var foot = document.getElementById('foot');
+  var epIds = ['episode-1', 'latar', 'masalah', 'topik', 'dampak', 'mitos', 'kebiasaan', 'kebutuhan', 'audiens', 'skrip'];
+  var navLinks = document.querySelectorAll('.nav a');
+  function show(name, id) {
+    var ep = name === 'ep';
+    vHome.hidden = ep;
+    vEp.hidden = !ep;
+    foot.hidden = !ep;
+    document.body.classList.toggle('is-home', !ep);
+    Array.prototype.forEach.call(navLinks, function (a) {
+      var s = a.getAttribute('data-show');
+      a.hidden = s !== 'both' && s !== (ep ? 'ep' : 'home');
+    });
+    var el = ep && id ? document.getElementById(id) : null;
+    if (el && id !== 'episode-1') el.scrollIntoView(); else window.scrollTo(0, 0);
+  }
+  function fromHash() {
+    var h = (location.hash || '').slice(1);
+    if (epIds.indexOf(h) > -1) show('ep', h); else show('home');
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    var id = a.getAttribute('href').slice(1);
+    e.preventDefault();
+    if (history.pushState) {
+      history.pushState(null, '', '#' + id);
+    } else {
+      location.hash = id;
+    }
+    if (epIds.indexOf(id) > -1) show('ep', id); else show('home');
+  });
+  window.addEventListener('hashchange', fromHash);
+  window.addEventListener('popstate', fromHash);
+  fromHash();
+
+  if ('IntersectionObserver' in window) {
+    var links = {};
+    Array.prototype.forEach.call(document.querySelectorAll('.nav a'), function (a) { links[a.getAttribute('href').slice(1)] = a; });
+    var current = null;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var a = links[e.target.id];
+        if (!a) return;
+        if (current) current.removeAttribute('aria-current');
+        a.setAttribute('aria-current', 'true');
+        current = a;
+        var nav = a.parentNode;
+        nav.scrollLeft = a.offsetLeft - (nav.clientWidth - a.offsetWidth) / 2;
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    Object.keys(links).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+  }
+})();
+</script>
+</Layout>

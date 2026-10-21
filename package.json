@@ -1,0 +1,22 @@
+{
+  "name": "podcast_periksa_dulu",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "bugs": {
+    "url": "https://github.com/SMILEat-ME/podcast_periksa_dulu/issues"
+  },
+  "homepage": "https://github.com/SMILEat-ME/podcast_periksa_dulu#readme",
+  "devDependencies": {
+    "vite": "^8.3.5"
+  },
+  "dependencies": {
+    "astro": "^7.4.1"
+  }
+}
